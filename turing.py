@@ -1,11 +1,7 @@
 #!/usr/env python
 
-import enum
-
-class Direction(enum.Enum):
-    RIGHT = 1
-    LEFT = 2
-    STAY = 3
+from transitions import Transition
+from transitions import Direction
 
 class Turing:
     def __init__(self, states, delta, initial_state,

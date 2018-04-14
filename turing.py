@@ -3,11 +3,11 @@
 from transitions import Transition
 from transitions import Direction
 
-class Turing:
-    def __init__(self, states, delta, initial_state,
-                 accept_state, reject_state, initial_tape):
+class TuringMachine:
+    def __init__(self, states, transitions, initial_state,
+                 accept_state, reject_state, initial_tape=list()):
         self.states = states
-        self.delta = delta
+        self.transitions = transitions
         self.current_state = initial_state
         self.accept_state = accept_state
         self.reject_state = reject_state
@@ -15,11 +15,18 @@ class Turing:
         self.head = 0
 
     def transition(self):
-        for transition in self.delta:
+        for transition in self.transitions:
             if transition[0] == self.current_state and transition[1] == self.read():
                 self.current_state = transition[2]
                 self.write(transition[3])
                 self.move(transition[4])
+
+    def execute(self):
+        for i in self.tape:
+            print(i)
+
+    def add_transition(self, transition):
+        self.transitions.append(transition)
 
     def read(self):
         return self.tape[self.head]

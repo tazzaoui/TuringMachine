@@ -1,3 +1,10 @@
+from enum import Enum
+
+class Direction(Enum):
+    LEFT = 0
+    RIGHT = 1
+    STAY = 2
+
 class Transition:
     def __init__(self, origin, gamma_origin, destination,
                  gamma_destination, direction):
@@ -6,6 +13,7 @@ class Transition:
         self.destination = destination
         self.gamma_destination = gamma_destination
         self.direction = direction
+        self.is_start = False
         self.is_accept = False
         self.is_reject = False
 
@@ -24,9 +32,11 @@ class Transition:
     def get_direction(self):
         return self.direction
 
+    def toggle_start(self):
+        self.is_start = not self.is_start
+
     def toggle_accept(self):
         self.is_accept = not self.is_accept
 
     def toggle_reject(self):
         self.is_reject = not self.is_reject
-        

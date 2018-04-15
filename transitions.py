@@ -40,3 +40,17 @@ class Transition:
 
     def toggle_reject(self):
         self.is_reject = not self.is_reject
+
+    def __str__(self):
+        out = "({},{}) ----> ({},{},".format(self.origin,
+                                               self.gamma_origin,
+                                               self.destination,
+                                               self.gamma_destination)
+        if self.direction == Direction.LEFT:
+            out += "L)"
+        elif self.direction == Direction.RIGHT:
+            out += "R)"
+        else:
+            out += "S)"
+
+        return out

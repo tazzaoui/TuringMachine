@@ -50,9 +50,15 @@ class TuringMachine:
             steps -= 1
 
     def move_right(self, steps=1):
+        if len(self.tape) < self.head + steps:
+            for i in range(len(self.tape), len(self.tape) + steps):
+                self.tape.append(' ')
         self.head += steps
 
     def write(self, char):
+        if len(self.tape) < self.head:
+            for i in range(len(self.tape), len(self.tape) + self.head):
+                self.tape.append(' ')
         self.tape[self.head] = char
 
     def erase(self):
@@ -66,5 +72,4 @@ class TuringMachine:
         for i in self.tape:
             sys.stdout.write("[{}]".format(i))
         print('')
-
 

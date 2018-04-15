@@ -1,5 +1,6 @@
 #!/usr/env python
 
+import sys
 from transitions import Transition
 from transitions import Direction
 
@@ -14,17 +15,23 @@ class TuringMachine:
         self.tape = initial_tape
         self.head = 0
 
-    def transition(self):
-        for transition in self.transitions:
-            if transition[0] == self.current_state and transition[1] == self.read():
-                self.current_state = transition[2]
-                self.write(transition[3])
-                self.move(transition[4])
-
     def execute(self):
-        for i in self.tape:
-            print(i)
+        while not self.halted():
+            self.step()
 
+    def step(self):
+        for transition in self.transitions:
+            if self.current_state == transition.get_origin() and\
+               self.read() == transition.get_gamma_origin():
+                self.write(transition.get_gamma_destination())
+                self.current_state = transition.get_destination()
+                self.move(transition.get_direction())
+                break
+
+    def halted(self):
+        return self.current_state == self.accept_state\
+        or self.current_state == self.reject_state
+    
     def add_transition(self, transition):
         self.transitions.append(transition)
 
@@ -50,3 +57,14 @@ class TuringMachine:
 
     def erase(self):
         self.tape[self.head] = None
+
+    def print_transitions(self):
+        for transition in self.transitions:
+            print(transition)
+
+    def print_tape(self):
+        for i in self.tape:
+            sys.stdout.write("[{}]".format(i))
+        print('')
+
+

@@ -37,6 +37,19 @@ while input_file[line_number] != "done":
         elif direction == "LEFT":
             if(head > 0):
                 head -= 1
+        elif direction == "END":
+            head = len(tape)
+        elif direction == "START":
+            head = 0
+        else:
+            print("ERROR ON LINE {}. No such direction: {}".format(line_number,direction))
+            exit(1)
+    elif line_split[0] == "moveto":
+        target = line_split[1].strip('\n')
+        for i in range(head, len(tape)):
+            if(tape[i] == target):
+                head = i
+                break
     elif line_split[0] == "if":
         if(tape[head] == line_split[1]):
             direction = line_split[3]
@@ -49,7 +62,10 @@ while input_file[line_number] != "done":
     elif line_split[0] == "goto":
         line_number = int(line_split[1]) - 1
     elif line_split[0] == "write":
-        tape[head] = line_split[1][0]
+        if(head >= len(tape)):
+            tape.append(line_split[1].strip('\n'))
+        else:
+            tape[head] = line_split[1].strip('\n')
     elif line_split[0].strip('\n') == "print":
         print_tape(tape)
     elif line_split[0].strip('\n') == "halt":

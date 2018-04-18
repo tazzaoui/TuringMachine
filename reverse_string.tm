@@ -1,4 +1,4 @@
-tape = *HiMyNameIsTahaAzzaoui
+tape = *AlanTuring
 print
 move END
 move RIGHT

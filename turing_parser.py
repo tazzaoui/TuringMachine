@@ -38,7 +38,7 @@ while input_file[line_number] != "done":
             if(head > 0):
                 head -= 1
         elif direction == "END":
-            head = len(tape)
+            head = len(tape) - 1
         elif direction == "START":
             head = 0
         else:
@@ -50,17 +50,51 @@ while input_file[line_number] != "done":
             if(tape[i] == target):
                 head = i
                 break
+    elif line_split[0] == "movebackto":
+        target = line_split[1].strip('\n')
+        i = len(tape) - 1
+        while(i >= 0):
+            if(tape[i] == target):
+                head = i
+                break
+            i -= 1
     elif line_split[0] == "if":
-        if(tape[head] == line_split[1]):
-            direction = line_split[3]
+        if(tape[head] == line_split[1].strip('\n')):
+            direction = line_split[2].strip('\n')
             if direction == "RIGHT":
-                print("Moved RIght")
                 head += 1
             elif direction == "LEFT":
                 if(head > 0):
-                    head -= 1            
+                    head -= 1
+            elif direction == "WRITE":
+                if(head >= len(tape)):
+                    tape.append(line_split[3].strip('\n'))
+                else:
+                    tape[head] = line_split[3].strip('\n')
+            elif direction == "HALT":
+                print("Halted Execution")
+                exit(1)
+            else:
+                print("Unrecognized Conditional!")
+                exit(1)
+    elif line_split[0] == "ifnot":
+        if(tape[head] != line_split[1].strip('\n')):
+            direction = line_split[2].strip('\n')
+            if direction == "RIGHT":
+                head += 1
+            elif direction == "LEFT":
+                if(head > 0):
+                    head -= 1
+            elif direction == "WRITE":
+                if(head >= len(tape)):
+                    tape.append(line_split[3].strip('\n'))
+                else:
+                    tape[head] = line_split[3].strip('\n')
+            elif direction == "HALT":
+                print("Halted Execution")
+                exit(1)
     elif line_split[0] == "goto":
-        line_number = int(line_split[1]) - 1
+        line_number = int(line_split[1].strip('\n')) - 1
     elif line_split[0] == "write":
         if(head >= len(tape)):
             tape.append(line_split[1].strip('\n'))
@@ -71,6 +105,8 @@ while input_file[line_number] != "done":
     elif line_split[0].strip('\n') == "halt":
         print("Halted Execution")
         exit(1)
+    elif line_split[0].strip('\n') == "copytoend":
+        tape.append(tape[head])
     else:
         print("Unrecognized syntax on line {} \n {}".format(line_number, line))
         exit(1)
